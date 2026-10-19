@@ -1,0 +1,480 @@
+/* Liquid Glass Button Styles - Apple-inspired 3D effects with enhanced visuals */
+
+.btn-glass {
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Primary Glass Button - Orange with liquid effect */
+.btn-glass-primary {
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 165, 0, 0.95) 0%, 
+    rgba(255, 140, 0, 0.9) 50%,
+    rgba(255, 100, 0, 0.85) 100%
+  );
+  border: 1px solid rgba(255, 220, 150, 0.4);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 4px 20px rgba(255, 165, 0, 0.4),
+    0 8px 40px rgba(255, 100, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-glass-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(
+    to bottom, 
+    rgba(255, 255, 255, 0.25) 0%, 
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 100%
+  );
+  border-radius: 12px 12px 50% 50%;
+  pointer-events: none;
+}
+
+/* Liquid shimmer effect */
+.btn-glass-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: liquidShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes liquidShimmer {
+  0%, 100% { transform: translateX(-100%) rotate(0deg); }
+  50% { transform: translateX(100%) rotate(0deg); }
+}
+
+.btn-glass-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(255, 165, 0, 0.5),
+    0 15px 50px rgba(255, 100, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 220, 150, 0.6);
+}
+
+.btn-glass-primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 
+    0 2px 10px rgba(255, 165, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Secondary Glass Button - Dark with depth */
+.btn-glass-secondary {
+  background: linear-gradient(
+    135deg, 
+    rgba(40, 40, 55, 0.9) 0%, 
+    rgba(25, 25, 35, 0.95) 50%,
+    rgba(15, 15, 25, 0.98) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 8px 40px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-glass-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    to bottom, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  border-radius: 12px 12px 50% 50%;
+  pointer-events: none;
+}
+
+.btn-glass-secondary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.05) 50%,
+    transparent 70%
+  );
+  animation: liquidShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-glass-secondary:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(255, 165, 0, 0.4);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(255, 165, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-glass-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Success Glass Button - Green with liquid glow */
+.btn-glass-success {
+  background: linear-gradient(
+    135deg, 
+    rgba(16, 185, 129, 0.95) 0%, 
+    rgba(5, 150, 105, 0.9) 50%,
+    rgba(4, 120, 87, 0.85) 100%
+  );
+  border: 1px solid rgba(110, 231, 183, 0.4);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 4px 20px rgba(16, 185, 129, 0.4),
+    0 8px 40px rgba(5, 150, 105, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-glass-success::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(
+    to bottom, 
+    rgba(255, 255, 255, 0.25) 0%, 
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 100%
+  );
+  border-radius: 12px 12px 50% 50%;
+  pointer-events: none;
+}
+
+.btn-glass-success::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: liquidShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-glass-success:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(16, 185, 129, 0.5),
+    0 15px 50px rgba(5, 150, 105, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  border-color: rgba(110, 231, 183, 0.6);
+}
+
+.btn-glass-success:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Danger Glass Button - Red with liquid effect */
+.btn-glass-danger {
+  background: linear-gradient(
+    135deg, 
+    rgba(239, 68, 68, 0.95) 0%, 
+    rgba(220, 38, 38, 0.9) 50%,
+    rgba(185, 28, 28, 0.85) 100%
+  );
+  border: 1px solid rgba(252, 165, 165, 0.4);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 4px 20px rgba(239, 68, 68, 0.4),
+    0 8px 40px rgba(220, 38, 38, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-glass-danger::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(
+    to bottom, 
+    rgba(255, 255, 255, 0.25) 0%, 
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 100%
+  );
+  border-radius: 12px 12px 50% 50%;
+  pointer-events: none;
+}
+
+.btn-glass-danger::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: liquidShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-glass-danger:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(239, 68, 68, 0.5),
+    0 15px 50px rgba(220, 38, 38, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  border-color: rgba(252, 165, 165, 0.6);
+}
+
+.btn-glass-danger:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Info Glass Button - Blue/Violet */
+.btn-glass-info {
+  background: linear-gradient(
+    135deg, 
+    rgba(139, 92, 246, 0.95) 0%, 
+    rgba(124, 58, 237, 0.9) 50%,
+    rgba(109, 40, 217, 0.85) 100%
+  );
+  border: 1px solid rgba(196, 181, 253, 0.4);
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 4px 20px rgba(139, 92, 246, 0.4),
+    0 8px 40px rgba(124, 58, 237, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-glass-info::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: linear-gradient(
+    to bottom, 
+    rgba(255, 255, 255, 0.25) 0%, 
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 100%
+  );
+  border-radius: 12px 12px 50% 50%;
+  pointer-events: none;
+}
+
+.btn-glass-info::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  animation: liquidShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.btn-glass-info:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(139, 92, 246, 0.5),
+    0 15px 50px rgba(124, 58, 237, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Small Button Size */
+.btn-glass-sm {
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+
+/* Extra Small Button Size */
+.btn-glass-xs {
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 8px;
+}
+
+/* Large Button Size */
+.btn-glass-lg {
+  padding: 12px 24px;
+  font-size: 15px;
+  border-radius: 14px;
+}
+
+/* Glass Card Effect with enhanced depth */
+.glass-card {
+  background: linear-gradient(
+    145deg, 
+    rgba(18, 18, 26, 0.85) 0%, 
+    rgba(12, 12, 18, 0.92) 50%,
+    rgba(8, 8, 14, 0.95) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 20px 60px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  pointer-events: none;
+}
+
+/* Glass Input with focus glow */
+.glass-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.glass-input:focus {
+  border-color: rgba(255, 165, 0, 0.6);
+  box-shadow: 
+    0 0 0 3px rgba(255, 165, 0, 0.15),
+    0 0 20px rgba(255, 165, 0, 0.1),
+    inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+
+/* Wallet Card Glass Effect with premium feel */
+.wallet-glass {
+  background: linear-gradient(
+    145deg, 
+    rgba(139, 92, 246, 0.18) 0%, 
+    rgba(59, 130, 246, 0.12) 50%,
+    rgba(139, 92, 246, 0.08) 100%
+  );
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 24px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 
+    0 8px 32px rgba(139, 92, 246, 0.25),
+    0 20px 60px rgba(59, 130, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.wallet-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+}
+
+/* Liquid morphing animation for special elements */
+@keyframes liquidMorph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%; }
+  75% { border-radius: 40% 50% 60% 30% / 70% 30% 40% 60%; }
+}
+
+.liquid-blob {
+  animation: liquidMorph 8s ease-in-out infinite;
+}
+
+/* Pulsing glow for CTAs */
+@keyframes pulseGlow {
+  0%, 100% { 
+    box-shadow: 
+      0 0 20px rgba(255, 165, 0, 0.4),
+      0 0 40px rgba(255, 165, 0, 0.2),
+      0 0 60px rgba(255, 165, 0, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 30px rgba(255, 165, 0, 0.6),
+      0 0 60px rgba(255, 165, 0, 0.4),
+      0 0 90px rgba(255, 165, 0, 0.2);
+  }
+}
+
+.btn-glass-pulse {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+

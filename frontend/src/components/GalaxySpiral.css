@@ -1,0 +1,300 @@
+.galaxy-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Core glow - bright center */
+.galaxy-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 200, 100, 0.9) 20%,
+    rgba(255, 165, 0, 0.6) 40%,
+    rgba(255, 100, 50, 0.3) 60%,
+    transparent 80%
+  );
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: coreGlow 4s ease-in-out infinite;
+  z-index: 10;
+}
+
+@keyframes coreGlow {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.9;
+  }
+}
+
+/* Spiral wrapper for rotation */
+.spiral-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%) rotateX(60deg);
+  transform-style: preserve-3d;
+  animation: spiralRotate 30s linear infinite;
+}
+
+@keyframes spiralRotate {
+  from { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); }
+  to { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); }
+}
+
+/* Spiral arms */
+.spiral-arm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  transform-origin: center center;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+.arm-1 {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 165, 0, 0.4) 30deg,
+    rgba(255, 200, 100, 0.6) 60deg,
+    rgba(255, 255, 200, 0.3) 90deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  transform: translate(-50%, -50%) scale(1.5);
+  filter: blur(8px);
+  animation: armPulse 8s ease-in-out infinite;
+}
+
+.arm-2 {
+  background: conic-gradient(
+    from 90deg,
+    transparent 0deg,
+    rgba(200, 100, 255, 0.3) 30deg,
+    rgba(255, 165, 0, 0.5) 60deg,
+    rgba(255, 200, 150, 0.3) 90deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  transform: translate(-50%, -50%) scale(1.8);
+  filter: blur(12px);
+  animation: armPulse 10s ease-in-out infinite 1s;
+}
+
+.arm-3 {
+  background: conic-gradient(
+    from 180deg,
+    transparent 0deg,
+    rgba(100, 150, 255, 0.3) 30deg,
+    rgba(255, 165, 0, 0.4) 60deg,
+    rgba(255, 220, 180, 0.2) 90deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  transform: translate(-50%, -50%) scale(2.2);
+  filter: blur(15px);
+  animation: armPulse 12s ease-in-out infinite 2s;
+}
+
+.arm-4 {
+  background: conic-gradient(
+    from 270deg,
+    transparent 0deg,
+    rgba(255, 100, 50, 0.3) 30deg,
+    rgba(255, 200, 0, 0.5) 60deg,
+    rgba(255, 255, 200, 0.2) 90deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  transform: translate(-50%, -50%) scale(2.5);
+  filter: blur(18px);
+  animation: armPulse 14s ease-in-out infinite 3s;
+}
+
+@keyframes armPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+/* Stars layer */
+.stars-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotateX(60deg);
+  transform-style: preserve-3d;
+  animation: starsRotate 60s linear infinite;
+}
+
+@keyframes starsRotate {
+  from { transform: rotateX(60deg) rotateZ(0deg); }
+  to { transform: rotateX(60deg) rotateZ(360deg); }
+}
+
+.star {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  background: white;
+  border-radius: 50%;
+  opacity: var(--opacity);
+  animation: starTwinkle var(--duration) ease-in-out infinite;
+  animation-delay: var(--delay);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: var(--opacity); transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* Dust clouds for depth */
+.dust-cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(30px);
+  opacity: 0.4;
+  animation: dustFloat 20s ease-in-out infinite;
+}
+
+.cloud-1 {
+  top: 30%;
+  left: 20%;
+  width: 150px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.3), rgba(255, 100, 50, 0.2));
+  animation-delay: 0s;
+}
+
+.cloud-2 {
+  top: 50%;
+  right: 25%;
+  width: 120px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(200, 100, 255, 0.2), rgba(100, 150, 255, 0.2));
+  animation-delay: 5s;
+}
+
+.cloud-3 {
+  bottom: 35%;
+  left: 35%;
+  width: 100px;
+  height: 50px;
+  background: linear-gradient(135deg, rgba(255, 200, 100, 0.3), rgba(255, 165, 0, 0.2));
+  animation-delay: 10s;
+}
+
+@keyframes dustFloat {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  25% { transform: translateY(-10px) translateX(5px); opacity: 0.5; }
+  50% { transform: translateY(-5px) translateX(-5px); opacity: 0.4; }
+  75% { transform: translateY(-15px) translateX(10px); opacity: 0.6; }
+}
+
+/* 3D Depth layers - creates parallax effect */
+.depth-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+}
+
+.layer-1 {
+  width: 400px;
+  height: 400px;
+  transform: translate(-50%, -50%) rotateX(70deg) translateZ(-50px);
+  background: radial-gradient(
+    ellipse,
+    rgba(255, 165, 0, 0.15) 0%,
+    rgba(255, 100, 50, 0.1) 30%,
+    transparent 70%
+  );
+  animation: layer1Rotate 40s linear infinite;
+}
+
+.layer-2 {
+  width: 500px;
+  height: 500px;
+  transform: translate(-50%, -50%) rotateX(65deg) translateZ(-100px);
+  background: radial-gradient(
+    ellipse,
+    rgba(200, 100, 255, 0.1) 0%,
+    rgba(100, 150, 255, 0.08) 40%,
+    transparent 70%
+  );
+  animation: layer2Rotate 50s linear infinite reverse;
+}
+
+.layer-3 {
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%) rotateX(60deg) translateZ(-150px);
+  background: radial-gradient(
+    ellipse,
+    rgba(255, 200, 100, 0.08) 0%,
+    rgba(255, 165, 0, 0.05) 50%,
+    transparent 70%
+  );
+  animation: layer3Rotate 60s linear infinite;
+}
+
+@keyframes layer1Rotate {
+  from { transform: translate(-50%, -50%) rotateX(70deg) translateZ(-50px) rotateZ(0deg); }
+  to { transform: translate(-50%, -50%) rotateX(70deg) translateZ(-50px) rotateZ(360deg); }
+}
+
+@keyframes layer2Rotate {
+  from { transform: translate(-50%, -50%) rotateX(65deg) translateZ(-100px) rotateZ(0deg); }
+  to { transform: translate(-50%, -50%) rotateX(65deg) translateZ(-100px) rotateZ(360deg); }
+}
+
+@keyframes layer3Rotate {
+  from { transform: translate(-50%, -50%) rotateX(60deg) translateZ(-150px) rotateZ(0deg); }
+  to { transform: translate(-50%, -50%) rotateX(60deg) translateZ(-150px) rotateZ(360deg); }
+}
+
+/* Outer glow ring */
+.galaxy-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 350px;
+  height: 350px;
+  transform: translate(-50%, -50%) rotateX(60deg);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 30px rgba(255, 165, 0, 0.15),
+    0 0 60px rgba(255, 165, 0, 0.1),
+    inset 0 0 30px rgba(255, 165, 0, 0.1);
+  animation: ringPulse 6s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) rotateX(60deg) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) rotateX(60deg) scale(1.05); }
+}

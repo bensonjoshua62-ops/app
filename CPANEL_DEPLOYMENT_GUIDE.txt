@@ -1,0 +1,290 @@
+================================================================================
+                    IGRIS Trading Platform - cPanel Deployment Guide
+================================================================================
+
+This guide explains how to deploy the IGRIS Trading Platform to a cPanel hosting
+environment. The app consists of a React frontend and FastAPI backend.
+
+================================================================================
+                              PREREQUISITES
+================================================================================
+
+1. cPanel hosting with:
+   - Node.js support (via cPanel's Node.js Selector)
+   - Python support (via cPanel's Python Selector) OR a VPS
+   - MongoDB database (MongoDB Atlas recommended for shared hosting)
+   - SSL certificate (recommended)
+
+2. Domain or subdomain configured in cPanel
+
+================================================================================
+                         OPTION 1: FRONTEND ONLY (Static)
+================================================================================
+
+If you only want to host the frontend (for demo/preview purposes):
+
+1. UPLOAD FILES
+   - Log into cPanel
+   - Open File Manager
+   - Navigate to public_html (or your subdomain folder)
+   - Upload the contents of the 'build' folder
+   - Ensure index.html is in the root
+
+2. CONFIGURE .htaccess
+   Create a .htaccess file in public_html with:
+   
+   ```
+   <IfModule mod_rewrite.c>
+     RewriteEngine On
+     RewriteBase /
+     RewriteRule ^index\.html$ - [L]
+     RewriteCond %{REQUEST_FILENAME} !-f
+     RewriteCond %{REQUEST_FILENAME} !-d
+     RewriteCond %{REQUEST_FILENAME} !-l
+     RewriteRule . /index.html [L]
+   </IfModule>
+   ```
+
+3. UPDATE BACKEND URL
+   Before building, update the REACT_APP_BACKEND_URL in frontend/.env
+   to point to your backend API URL.
+
+================================================================================
+                    OPTION 2: FULL STACK (VPS/Dedicated Server)
+================================================================================
+
+For full functionality with backend:
+
+STEP 1: PREPARE YOUR SERVER
+---------------------------
+SSH into your server and install requirements:
+
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Python 3.11
+sudo apt install python3.11 python3.11-venv python3-pip -y
+
+# Install Node.js 18+
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install nodejs -y
+
+# Install MongoDB (or use MongoDB Atlas)
+# See: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
+
+# Install Nginx
+sudo apt install nginx -y
+
+# Install PM2 for process management
+sudo npm install -g pm2
+```
+
+STEP 2: UPLOAD AND EXTRACT FILES
+--------------------------------
+```bash
+# Create app directory
+sudo mkdir -p /var/www/igris
+cd /var/www/igris
+
+# Upload IGRIS_build.zip and extract
+unzip IGRIS_build.zip
+
+# Upload backend files separately or from your repo
+```
+
+STEP 3: SETUP BACKEND
+---------------------
+```bash
+cd /var/www/igris/backend
+
+# Create virtual environment
+python3.11 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create .env file
+cat > .env << EOF
+MONGO_URL=mongodb://localhost:27017
+DB_NAME=igris
+JWT_SECRET_KEY=your-super-secret-key-change-this
+EOF
+
+# Start backend with PM2
+pm2 start "uvicorn server:app --host 0.0.0.0 --port 8001" --name igris-backend
+pm2 save
+```
+
+STEP 4: SETUP FRONTEND (Serve with Nginx)
+-----------------------------------------
+```bash
+# Copy build files
+sudo cp -r /var/www/igris/build/* /var/www/igris/public/
+```
+
+STEP 5: CONFIGURE NGINX
+-----------------------
+Create Nginx config:
+```bash
+sudo nano /etc/nginx/sites-available/igris
+```
+
+Add this configuration:
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    
+    # Redirect HTTP to HTTPS (after SSL setup)
+    # return 301 https://$server_name$request_uri;
+
+    root /var/www/igris/public;
+    index index.html;
+
+    # Frontend routes
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Backend API proxy
+    location /api {
+        proxy_pass http://127.0.0.1:8001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Static files caching
+    location /static {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+```
+
+Enable the site:
+```bash
+sudo ln -s /etc/nginx/sites-available/igris /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+STEP 6: SETUP SSL (Recommended)
+-------------------------------
+```bash
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+STEP 7: CONFIGURE FIREWALL
+--------------------------
+```bash
+sudo ufw allow 'Nginx Full'
+sudo ufw allow ssh
+sudo ufw enable
+```
+
+================================================================================
+                      OPTION 3: cPanel with CloudLinux/Python
+================================================================================
+
+Some cPanel hosts support Python apps:
+
+1. Go to cPanel → Setup Python App
+2. Create new Python 3.11 app
+3. Set application root to your backend folder
+4. Set application URL to /api
+5. Set Application startup file: server.py
+6. Set Application Entry point: app
+7. Install requirements from requirements.txt
+8. Start the application
+
+For frontend:
+1. Upload build folder contents to public_html
+2. Create .htaccess as shown in Option 1
+
+================================================================================
+                          MONGODB ATLAS SETUP
+================================================================================
+
+For shared hosting, use MongoDB Atlas (free tier available):
+
+1. Go to https://www.mongodb.com/atlas
+2. Create a free account
+3. Create a new cluster (M0 free tier)
+4. Click "Connect" → "Connect your application"
+5. Copy the connection string
+6. Replace <password> with your database password
+7. Update MONGO_URL in your backend .env:
+   
+   MONGO_URL=mongodb+srv://username:password@cluster.xxxxx.mongodb.net/igris
+
+8. In Atlas, go to Network Access → Add IP Address
+   - Add your server's IP or 0.0.0.0/0 for all (less secure)
+
+================================================================================
+                          ENVIRONMENT VARIABLES
+================================================================================
+
+Backend (.env):
+```
+MONGO_URL=your-mongodb-connection-string
+DB_NAME=igris
+JWT_SECRET_KEY=generate-a-long-random-string
+```
+
+Frontend (.env) - Before building:
+```
+REACT_APP_BACKEND_URL=https://yourdomain.com
+```
+
+================================================================================
+                              TESTING
+================================================================================
+
+1. Visit your domain - you should see the IGRIS homepage
+2. Click "Sign In" and login with:
+   - Admin: admin@igris.com / admin123
+   - Or create a new account
+3. As admin, go to API Settings and add your OpenAI API key
+4. Test the IGRIS chat in AI Signals page
+
+================================================================================
+                           TROUBLESHOOTING
+================================================================================
+
+Backend not starting:
+- Check PM2 logs: pm2 logs igris-backend
+- Verify MongoDB connection string
+- Ensure port 8001 is not in use
+
+Frontend showing blank page:
+- Check browser console for errors
+- Verify REACT_APP_BACKEND_URL is correct
+- Check .htaccess is properly configured
+
+API calls failing:
+- Check Nginx error logs: sudo tail -f /var/log/nginx/error.log
+- Verify backend is running: pm2 status
+- Test API directly: curl http://localhost:8001/api/
+
+CORS errors:
+- Backend already allows all origins
+- If issues persist, check Nginx proxy headers
+
+================================================================================
+                              SUPPORT
+================================================================================
+
+For additional help:
+- Check the README.md file
+- Review backend logs for errors
+- Ensure all environment variables are set correctly
+
+================================================================================
